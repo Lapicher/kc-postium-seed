@@ -38,7 +38,7 @@ export class PostService {
     }
 
     getUserPosts(id: number): Observable<Post[]> {
-
+        //alert("que es id: "+id);
         /*----------------------------------------------------------------------------------------------|
          | ~~~ Red Path ~~~                                                                             |
          |----------------------------------------------------------------------------------------------|
@@ -55,9 +55,9 @@ export class PostService {
          |   - Filtro por fecha de publicación: publicationDate_lte=x (siendo x la fecha actual)        |
          |   - Ordenación: _sort=publicationDate&_order=DESC                                            |
          |----------------------------------------------------------------------------------------------*/
-
+        let ahora = new Date().getTime();
         return this._http
-                   .get(`${this._backendUri}/posts`)
+                   .get(`${this._backendUri}/posts/?author.id=${id}&publicationDate_lte=${ahora}&_sort=publicationDate&_order=DESC`)
                    .map((response: Response) => Post.fromJsonToList(response.json()));
     }
 
