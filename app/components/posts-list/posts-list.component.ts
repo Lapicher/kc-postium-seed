@@ -1,6 +1,7 @@
 import { Component, Input } from "@angular/core";
 
 import { Post } from "../../models/post";
+import { Router } from '@angular/router';
 
 @Component({
     selector: "posts-list",
@@ -25,5 +26,15 @@ export class PostsListComponent {
      | correspondiente. Recuerda que para hacer esto necesitas inyectar como dependencia el Router de la app.  La ruta |
      | a navegar es '/posts', pasando como parámetro el identificador del post.                                        |
      |-----------------------------------------------------------------------------------------------------------------*/
+
+     constructor(private _router: Router){
+
+     }
+
+     mostrarDetalle(post): void{
+         //alert("Enroutar al Detalle");
+         //console.log(post);
+         this._router.navigate(["/posts", post.id]);
+     }
 
 }
