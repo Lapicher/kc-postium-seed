@@ -35,6 +35,12 @@ export class PostsResolve implements Resolve<Post[]> {
          | Recuerda mirar en los parámetros de la ruta, a ver qué encuentras.                      |
          |-----------------------------------------------------------------------------------------*/
 
+        
+        if(route.params['categoryId']!=undefined){
+            let idCategoria: number = route.params["categoryId"];
+            return this._postService.getCategoryPosts(idCategoria);
+        }
+         
         return this._postService.getPosts();
     }
 }

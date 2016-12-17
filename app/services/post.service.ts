@@ -5,6 +5,7 @@ import "rxjs/add/operator/map";
 
 import { BackendUri } from "./settings.service";
 import { Post } from "../models/post";
+import { Category } from '../models/category';
 
 @Injectable()
 export class PostService {
@@ -84,9 +85,39 @@ export class PostService {
          |   - Ordenación: _sort=publicationDate&_order=DESC                                                |
          |--------------------------------------------------------------------------------------------------*/
 
+        //console.log("JUAD "+id);
+
+        
+        
+        let ahora = new Date().getTime();
         return this._http
-                   .get(`${this._backendUri}/posts`)
-                   .map((response: Response) => Post.fromJsonToList(response.json()));
+                   .get(`${this._backendUri}/posts?publicationDate_lte=${ahora}&_sort=publicationDate&_order=DESC`)
+                   .map((response: Response) => {
+
+                       let posts: Post[] = Post.fromJsonToList(response.json());
+                       // otra forma de buscar entre los posts la categoria. Y retornar el nuevo arreglo.
+                       /*
+                       let arrNewPosts: Post[] = [];
+                       for(let i=0; i< posts.length; i++){
+                           for(let j=0; j< posts[i].categories.length; j++){
+                               console.log(posts[i].categories[j].id);
+                               if(posts[i].categories[j].id.toString()===id.toString()){
+                                   console.log("un post");
+                                   console.log(typeof(posts[i].categories[j].id));
+                                   arrNewPosts.push(posts[i]);
+                               }
+                           }
+                       } 
+                       //console.log(arrNewPosts);
+                       return arrNewPosts;
+                       */
+
+                       // forma reducida con los metodos de la clase Array.
+                       return posts.filter((post: Post)=>{
+                           return post.categories.find((category: Category) => category.id == id)!== undefined;
+                       });
+                    
+                   });
     }
 
     getPostDetails(id: number): Observable<Post> {
