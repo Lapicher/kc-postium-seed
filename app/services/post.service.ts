@@ -30,8 +30,10 @@ export class PostService {
          |   - Ordenación: _sort=publicationDate&_order=DESC                                            |
          |----------------------------------------------------------------------------------------------*/
 
+        let fechaActual = new Date().getTime();
+        //console.log(fechaActual);
         return this._http
-                   .get(`${this._backendUri}/posts`)
+                   .get(`${this._backendUri}/posts?_sort=publicationDate&_order=DESC&publicationDate_lte=${fechaActual}`)
                    .map((response: Response) => Post.fromJsonToList(response.json()));
     }
 
